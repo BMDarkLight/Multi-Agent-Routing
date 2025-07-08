@@ -9,13 +9,11 @@ Build a containerized FastAPI service that implements a **LangGraph-based multi-
 ## 📦 Tech Stack
 
 - **FastAPI** for the HTTP service  
-- **LangGraph** for multi-agent orchestration  
-- **Python** (type hints, OOP)  
+- **LangGraph** for multi-agent orchestration 
 - **Docker & Docker Compose** for containerization  
 - **GitHub Codespaces** (`vs code extension`) for development  
 - **GitHub Actions** (`.github/workflows/ci.yml`) for CI (lint + tests)  
 - **Pytest** for unit testing  
-- **JWT** is *not* required for this AI service
 
 ---
 
@@ -23,12 +21,31 @@ Build a containerized FastAPI service that implements a **LangGraph-based multi-
 
 ### 🤖 Agent Routing
 
-- **Classifier Node**: Determines the question topic (math, code, travel)  
-- **Route Node**: Selects and invokes:
-  - **MathBot**: Solves math problems  
-  - **CodeBot**: Answers Python coding questions  
-  - **TravelBot**: Provides travel tips or itineraries  
-- **Response Node**: Formats the agent’s output
+As visualized by the **LangGragh** using **grandalf**
+
+```shell
+                        +---------+                             
+                        |__start__|                             
+                        +---------+                             
+                              *                                
+                              *                                
+                              *                
+                        +----------+                           
+                       .| classify |.                          
+                   .... +----------+ ....                      
+               ....      .       ..      ....                  
+           ....        ..          .         ....              
+        ...           .             .            ...           
++------+        +------+        +--------+        +---------+  
+| code |***     | math |        | travel |       *| unknown |  
++------+   **** +------+*       +--------+   **** +---------+  
+               ****      *       **      ****                  
+                   ****   **    *    ****                      
+                       ***  *  *  ***                          
+                        +---------+                            
+                        | __end__ |                            
+                        +---------+                            
+```
 
 ### 🌐 API Endpoints
 
@@ -45,12 +62,11 @@ Build a containerized FastAPI service that implements a **LangGraph-based multi-
   - Classifier logic (correct routing)
   - Each agent module (math_bot, code_bot, travel_bot)
   - FastAPI endpoints (`/ask`, `/health`)
-- Use **pytest** and **httpx.AsyncClient** for endpoint tests
-- Tests must run successfully in Codespaces
+- **pytest** and **httpx.AsyncClient** for endpoint tests
 
 ---
 
-## 📁 Suggested Folder Structure
+## 📁 Folder Structure
 
 ```
 .
