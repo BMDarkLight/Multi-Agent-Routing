@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  langgraph-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: multi-agent-routing
+    ports:
+      - "8000:80"
+    volumes:
+      - ./app:/app/app
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
