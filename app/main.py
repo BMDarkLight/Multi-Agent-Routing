@@ -44,8 +44,8 @@ def ask_question(q: Question):
     state = {"question": q.question}
     result = graph.invoke(state)
     return Answer(
-        agent=result["agent"],
-        answer=result["final_response"]
+        agent = result["agent"],
+        answer = result.get("answer", "No answer provided")
     )
 
 class Status(BaseModel):

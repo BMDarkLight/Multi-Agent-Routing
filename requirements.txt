@@ -5,6 +5,7 @@ langchain
 langchain_community
 langchain_openai
 langgraph
+numexpr
 fastapi
 uvicorn
 pydantic

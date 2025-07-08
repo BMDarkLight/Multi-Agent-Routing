@@ -1,4 +1,4 @@
-from langchain.llms import OpenAI
+from langchain_community.llms import OpenAI
 from langchain.agents import Tool, initialize_agent, AgentType
 from langchain_community.tools import DuckDuckGoSearchRun
 from app.classifier import AgentState
@@ -28,5 +28,5 @@ def code_bot_node(state: AgentState) -> AgentState:
     )
 
     answer = agent.invoke({"input": state["question"]})
-
-    return {**state, "answer": answer}
+    
+    return {**state, "answer": str(answer)}

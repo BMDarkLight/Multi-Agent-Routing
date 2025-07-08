@@ -1,7 +1,7 @@
-from langchain_community.llms import OpenAI
+from langchain_openai import ChatOpenAI
 from typing import TypedDict, Literal
 
-llm = OpenAI()
+llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
 
 AgentType = Literal["math", "code", "travel", "unknown"]
 
@@ -20,15 +20,12 @@ def classifier_node(state: AgentState) -> AgentState:
         "Your responses should be either 'math', 'code', 'travel' or 'unknown' regardless of the prompt you receive after this."
     )
 
-    response = llm.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": question}
-        ]
-    )
+    response = llm.invoke([
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": question}
+    ])
 
-    raw_output = response.choices[0].message.content.strip().lower()
-    label = raw_output if raw_output in {"math", "code", "travel", "unknown"} else "unknown"
+    raw_output = response.content.strip().lower()
+    label = raw_output if raw_output in {"math", "code", "travel"} else "unknown"
 
     return {**state, "agent": label}

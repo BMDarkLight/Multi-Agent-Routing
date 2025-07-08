@@ -1,16 +1,19 @@
 from langchain.agents import initialize_agent, Tool
-from langchain.llms import OpenAI
+from langchain_community.llms import OpenAI
 from langchain_community.utilities import WikipediaAPIWrapper
 from langchain_community.tools import DuckDuckGoSearchRun
 from app.classifier import AgentState
 import requests
-import dotenv
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 search = DuckDuckGoSearchRun()
 wikipedia = WikipediaAPIWrapper()
 
 def get_weather(place: str) -> str:
-    api_key = dotenv.get("OPENWEATHER_API_KEY")
+    api_key = os.getenv("OPENWEATHER_API_KEY")
     url = f"http://api.openweathermap.org/data/2.5/weather?q={place}&appid={api_key}&units=metric"
     response = requests.get(url)
     if response.status_code == 200:
@@ -20,6 +23,7 @@ def get_weather(place: str) -> str:
         return f"The current weather in {place} is {weather} with a temperature of {temp}°C."
     else:
         return "Weather information is not available at the moment."
+
 def travel_bot_node(state: AgentState) -> AgentState:
 
     weather_tool = Tool(
@@ -64,4 +68,4 @@ def travel_bot_node(state: AgentState) -> AgentState:
 
     answer = agent.invoke({"input": state["question"]})
 
-    return {**state, "answer": answer}
+    return {**state, "answer": str(answer)}

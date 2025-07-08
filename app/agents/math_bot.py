@@ -1,4 +1,4 @@
-from langchain.llms import OpenAI
+from langchain_community.llms import OpenAI
 from langchain.chains import LLMMathChain, LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.agents.agent_types import AgentType
@@ -36,5 +36,5 @@ def math_bot_node(state: AgentState) -> AgentState:
     )
 
     answer = agent.invoke({"input": state["question"]})
-
-    return {**state, "answer": answer}
+    
+    return {**state, "answer": str(answer)}
