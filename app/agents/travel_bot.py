@@ -1,10 +1,12 @@
 from langchain.agents import initialize_agent, Tool
 from langchain.llms import OpenAI
-from langchain_community.utilities import WikipediaAPIWrapper, SerpAPIWrapper
+from langchain_community.utilities import WikipediaAPIWrapper
+from langchain_community.tools import DuckDuckGoSearchRun
+from app.classifier import AgentState
 import requests
 import dotenv
 
-search = SerpAPIWrapper()
+search = DuckDuckGoSearchRun()
 wikipedia = WikipediaAPIWrapper()
 
 def get_weather(place: str) -> str:

@@ -1,29 +1,17 @@
 from langchain.llms import OpenAI
 from langchain.agents import Tool, initialize_agent, AgentType
-from langchain_community.utilities import SerpAPIWrapper
+from langchain_community.tools import DuckDuckGoSearchRun
 from app.classifier import AgentState
 
 def code_bot_node(state: AgentState) -> AgentState:
-    forum_search = Tool(
-        name="ForumSearch",
-        func=SerpAPIWrapper(serpapi_parameters={
-            "site": "stackoverflow.com OR reddit.com/r/learnpython OR quora.com"
-        }).run,
-        description="Searches Stack Overflow, Reddit, and Quora for answers to Python programming questions."
-    )
-    python_docs_search = Tool(
-        name="PythonOrgSearch",
-        func=SerpAPIWrapper(serpapi_parameters={"site": "python.org"}).run,
-        description="Searches python.org for answers to Python code questions."
-    )
-    general_search = Tool(
+    search = Tool(
         name="GeneralInternetSearch",
-        func=SerpAPIWrapper().run,
+        func=DuckDuckGoSearchRun().run,
         description="Searches the internet for answers to general Python programming questions when python.org and forums do not have the answer."
     )
 
     llm = OpenAI(temperature=0)
-    tools = [forum_search, python_docs_search, general_search]
+    tools = [search]
     agent = initialize_agent(
         tools,
         llm,

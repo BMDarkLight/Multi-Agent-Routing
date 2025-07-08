@@ -1,4 +1,6 @@
 dotenv
+duckduckgo-search
+wikipedia
 langchain
 langchain_community
 langchain_openai

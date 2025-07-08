@@ -11,9 +11,6 @@ load_dotenv()
 if "OPENAI_API_KEY" not in os.environ:
     os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter your OpenAI API key: ")
 
-if "SERPAPI_API_KEY" not in os.environ:
-    os.environ["SERPAPI_API_KEY"] = getpass.getpass("Enter your SerpAPI API key: ")
-
 if "OPENWEATHER_API_KEY" not in os.environ:
     os.environ["OPENWEATHER_API_KEY"] = getpass.getpass("Enter your OpenWeather API key: ")
 
