@@ -1,8 +1,22 @@
 from fastapi import FastAPI, Request, HTTPException, Depends
 from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
-import agents
-import classifier
+from app.agent import graph
+from dotenv import load_dotenv
+import getpass
+import os
+
+load_dotenv()
+
+if "OPENAI_API_KEY" not in os.environ:
+    os.environ["OPENAI_API_KEY"] = getpass.getpass("Enter your OpenAI API key: ")
+
+if "SERPAPI_API_KEY" not in os.environ:
+    os.environ["SERPAPI_API_KEY"] = getpass.getpass("Enter your SerpAPI API key: ")
+
+if "OPENWEATHER_API_KEY" not in os.environ:
+    os.environ["OPENWEATHER_API_KEY"] = getpass.getpass("Enter your OpenWeather API key: ")
+
 
 app = FastAPI()
 
@@ -24,9 +38,18 @@ def home_page():
 class Answer(BaseModel):
     agent: str
     answer: str
+
+class Question(BaseModel):
+    question: str
+
 @app.post('/ask', response_model=Answer)
-def ask_question(question: str):
-    return 
+def ask_question(q: Question):
+    state = {"question": q.question}
+    result = graph.invoke(state)
+    return Answer(
+        agent=result["agent"],
+        answer=result["final_response"]
+    )
 
 class Status(BaseModel):
     up: bool

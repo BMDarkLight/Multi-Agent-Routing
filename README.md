@@ -93,16 +93,3 @@ Build a containerized FastAPI service that implements a **LangGraph-based multi-
    pytest
    ```
 
----
-
-## ✅ Completion Checklist
-
-- [ ] LangGraph nodes implemented (classifier, route, response)  
-- [ ] Agents produce correct answers  
-- [ ] FastAPI endpoints functional  
-- [ ] Docker Compose spins up API service  
-- [ ] Codespaces devcontainer configured  
-- [ ] GitHub Actions CI passes (lint + tests)  
-- [ ] README.md with setup & usage instructions  
-
----
