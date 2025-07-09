@@ -8,6 +8,7 @@ AgentType = Literal["math", "code", "travel", "unknown"]
 class AgentState(TypedDict, total=False):
     question: str
     agent: AgentType
+    answer: str
 
 def classifier_node(state: AgentState) -> AgentState:
     question = state.get("question", "").strip()
