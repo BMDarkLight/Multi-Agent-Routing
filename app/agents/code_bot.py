@@ -1,4 +1,4 @@
-from langchain_community.llms import OpenAI
+from langchain_openai import ChatOpenAI
 from langchain.agents import Tool, initialize_agent, AgentType
 from langchain_community.tools import DuckDuckGoSearchRun
 from app.classifier import AgentState
@@ -10,7 +10,7 @@ def code_bot_node(state: AgentState) -> AgentState:
         description="Searches the internet for answers to general Python programming questions when python.org and forums do not have the answer."
     )
 
-    llm = OpenAI(temperature=0)
+    llm = ChatOpenAI(model='gpt-3.5-turbo', temperature=0)
     tools = [search]
     agent = initialize_agent(
         tools,
@@ -29,4 +29,4 @@ def code_bot_node(state: AgentState) -> AgentState:
 
     answer = agent.invoke({"input": state["question"]})
     
-    return {**state, "answer": str(answer)}
+    return {**state, "answer": str(answer["output"]) if "output" in answer else "No answer found."}

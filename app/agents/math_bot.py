@@ -1,4 +1,4 @@
-from langchain_community.llms import OpenAI
+from langchain_openai import ChatOpenAI
 from langchain.chains import LLMMathChain, LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.agents.agent_types import AgentType
@@ -6,7 +6,7 @@ from langchain.agents import Tool, initialize_agent
 from app.classifier import AgentState
 
 def math_bot_node(state: AgentState) -> AgentState:
-    llm = OpenAI(model='gpt-3.5-turbo',temperature=0)
+    llm = ChatOpenAI(model='gpt-3.5-turbo', temperature=0)
 
     word_problem_template = """You are a reasoning agent tasked with solving 
     the user's logic-based questions. Logically arrive at the solution, and be 
@@ -35,6 +35,10 @@ def math_bot_node(state: AgentState) -> AgentState:
         handle_parsing_errors=True
     )
 
-    answer = agent.invoke({"input": state["question"]})
+    try:
+        answer = agent.invoke({"input": state["question"]})
+        output = str(answer["output"]) if "output" in answer else "No output."
+    except ValueError as e:
+        output = f"Math tool failed to parse the response: {str(e)}"
     
-    return {**state, "answer": str(answer)}
+    return {**state, "answer": output}

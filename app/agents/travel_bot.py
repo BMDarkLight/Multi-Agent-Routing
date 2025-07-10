@@ -1,5 +1,5 @@
 from langchain.agents import initialize_agent, Tool
-from langchain_community.llms import OpenAI
+from langchain_openai import ChatOpenAI
 from langchain_community.utilities import WikipediaAPIWrapper
 from langchain_community.tools import DuckDuckGoSearchRun
 from app.classifier import AgentState
@@ -46,7 +46,7 @@ def travel_bot_node(state: AgentState) -> AgentState:
 
     tools = [search_tool, wikipedia_tool, weather_tool]
 
-    llm = OpenAI(temperature=0.3)
+    llm = ChatOpenAI(model='gpt-3.5-turbo', temperature=0.3)
 
     agent = initialize_agent(
         tools,
@@ -68,4 +68,4 @@ def travel_bot_node(state: AgentState) -> AgentState:
 
     answer = agent.invoke({"input": state["question"]})
 
-    return {**state, "answer": str(answer)}
+    return {**state, "answer": str(answer["output"]) if "output" in answer else "No answer found."}
