@@ -1,7 +1,7 @@
 dotenv
 duckduckgo-search
 wikipedia
-langchain
+langchain>=0.1.0
 langchain_community
 langchain_openai
 langgraph
@@ -10,6 +10,11 @@ fastapi
 uvicorn
 pydantic
 sympy
-openai
-pytest
-pytest-asyncio
+openai>=1.0.0
+pytest>=7.0.0
+pytest-asyncio>=0.21.0
+httpx[httpx]>=0.23.0
+pydantic>=2.0.0
+httpx
+starlette>=0.27.0
+unittest-xml-reporting>=3.0.4
