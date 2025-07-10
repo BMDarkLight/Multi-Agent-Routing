@@ -46,7 +46,7 @@ def travel_bot_node(state: AgentState) -> AgentState:
 
     tools = [search_tool, wikipedia_tool, weather_tool]
 
-    llm = OpenAI(temperature=0)
+    llm = OpenAI(temperature=0.3)
 
     agent = initialize_agent(
         tools,

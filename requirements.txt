@@ -11,3 +11,5 @@ uvicorn
 pydantic
 sympy
 openai
+pytest
+pytest-asyncio

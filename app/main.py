@@ -49,10 +49,10 @@ def ask_question(q: Question):
     )
 
 class Status(BaseModel):
-    up: bool
+    status: bool
 
 @app.get('/health', response_model=Status)
 def service_status() -> Status:
     return Status(
-        up = True
+        status = True
     )

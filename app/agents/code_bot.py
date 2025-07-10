@@ -22,7 +22,7 @@ def code_bot_node(state: AgentState) -> AgentState:
                 "You are a helpful assistant that answers Python programming questions "
                 "You search python.org for answers in the first place, You usually do this when the question is about the syntax of the code or the way python itself behaves not the libraries used,"
                 "Then you try to search forums like Quora, Reddit and Stack Overflow for similar problems people have had in the past and provide ways to fix the problem provided,"
-                "Then if there was no answer satisfying the question, you try to search the internet"
+                "Then if there was no answer satisfying the question, you try to search the internet globally"
             )
         }
     )
