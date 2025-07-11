@@ -7,8 +7,8 @@ on:
     branches: [main]
 
 jobs:
-  test:
-    name: Run Pytest
+  test-and-build:
+    name: Test, Build and Push Docker Image
     runs-on: ubuntu-latest
     env:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -31,3 +31,17 @@ jobs:
 
       - name: Run tests with pytest
         run: PYTHONPATH=. pytest tests/
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker image
+        run: |
+          docker build -t bmdarklight/multi-agent-routing:latest .
+
+      - name: Push Docker image
+        run: |
+          docker push bmdarklight/multi-agent-routing:latest
