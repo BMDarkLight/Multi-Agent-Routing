@@ -9,10 +9,13 @@ def math_bot_node(state: AgentState) -> AgentState:
     llm = ChatOpenAI(model='gpt-3.5-turbo', temperature=0)
 
     word_problem_template = """You are a reasoning agent tasked with solving 
-    the user's logic-based questions. Logically arrive at the solution, and be 
+    the user's logic-based or math questions. If the question is not clearly a 
+    solvable math problem, clarify the question by reformulating it into a well-structured 
+    mathematical form, if possible. Then solve it. Logically arrive at the solution and be 
     factual. In your answers, clearly detail the steps involved and give the 
-    final answer. Provide the response in bullet points. 
-    Question {question} Answer"""
+    final answer. Provide the response in bullet points.
+    Question: {question}
+    Answer:"""
 
     problem_chain = LLMMathChain.from_llm(llm=llm)
     math_tool = Tool.from_function(name="Calculator",
@@ -37,8 +40,10 @@ def math_bot_node(state: AgentState) -> AgentState:
 
     try:
         answer = agent.invoke({"input": state["question"]})
-        output = str(answer["output"]) if "output" in answer else "No output."
+        output = str(answer.get("output", "")).strip()
+        if not output:
+            output = "I tried to interpret your question but could not solve it directly. Please rephrase or clarify the math-related part."
     except ValueError as e:
-        output = f"Math tool failed to parse the response: {str(e)}"
+        output = f"I couldn't parse the math question correctly. I attempted to reformulate it, but please make sure the question is math-related and well-defined. Error: {str(e)}"
     
     return {**state, "answer": output}

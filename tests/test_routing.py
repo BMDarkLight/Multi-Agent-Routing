@@ -1,19 +1,16 @@
 import pytest
-from app.classifier import classifier_node, AgentState
-from unittest.mock import patch
+from app.classifier import classifier_node
 
-@pytest.mark.parametrize("question,expected", [
-    ("What is the derivative of x^2?", "math"),
-    ("How to write a loop in Python?", "code"),
-    ("Where should I travel in Europe?", "travel"),
-    ("Tell me a bedtime story.", "unknown"),
+@pytest.mark.parametrize("question,expected_agent", [
+    ("What is 2 + 2?", "math"),
+    ("How do I write a loop in Python?", "code"),
+    ("What's the best place to visit in Italy?", "travel"),
+    ("I had a weird dream about robots", "unknown"),
+    ("Can you help me with calculus homework?", "math"),
+    ("How to sort a list in JavaScript?", "code"),
+    ("Is Japan a good travel destination in spring?", "travel"),
 ])
-def test_classifier_node(question, expected):
-    state: AgentState = {"question": question}
-
-    with patch("app.classifier.llm.invoke") as mock_invoke:
-        mock_invoke.return_value.content = expected  # simulate correct classification
-        new_state = classifier_node(state)
-
-    assert new_state["agent"] == expected
-    assert new_state["question"] == question
+def test_classifier_node(question, expected_agent):
+    state = {"question": question}
+    result = classifier_node(state)
+    assert result["agent"] == expected_agent

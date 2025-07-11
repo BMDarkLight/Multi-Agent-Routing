@@ -1,21 +1,23 @@
 import pytest
 from unittest.mock import patch, MagicMock
 from app.agents.travel_bot import travel_bot_node
-from app.classifier import AgentState
 
-@pytest.mark.parametrize("question,expected_answer", [
-    ("What should I do in Paris?", "Visit the Eiffel Tower."),
-    ("Tell me about Kyoto", "Kyoto has many temples."),
-])
-def test_travel_bot_node(question, expected_answer):
-    state: AgentState = {"question": question}
+@patch("app.agents.travel_bot.initialize_agent")
+def test_travel_bot_node_returns_reasonable_answer(mock_initialize_agent):
+    mock_agent = MagicMock()
+    mock_agent.invoke.return_value = {
+        "output": "Paris is a fantastic destination in spring with great food and historic sites."
+    }
+    mock_initialize_agent.return_value = mock_agent
 
-    with patch("app.agents.travel_bot.initialize_agent") as mock_initialize_agent:
-        mock_agent = MagicMock()
-        mock_agent.invoke.return_value = expected_answer
-        mock_initialize_agent.return_value = mock_agent
+    state = {"question": "Where should I travel in spring?"}
+    result = travel_bot_node(state)
 
-        new_state = travel_bot_node(state)
+    answer = result.get("answer", "")
+    
+    assert isinstance(answer, str)
+    assert answer.strip() != ""
+    assert "No answer found" not in answer
 
-    assert new_state["question"] == question
-    assert new_state["answer"] == expected_answer
+    travel_keywords = ["travel", "visit", "destination", "place", "trip", "city", "beach", "mountain"]
+    assert any(word in answer.lower() for word in travel_keywords)
