@@ -1,4 +1,4 @@
-from langchain.agents import initialize_agent, Tool
+from langchain.agents import initialize_agent, Tool, AgentType
 from langchain_openai import ChatOpenAI
 from langchain_community.utilities import WikipediaAPIWrapper
 from langchain_community.tools import DuckDuckGoSearchRun
