@@ -48,7 +48,7 @@ jobs:
       - name: Build Docker image with tags
         run: |
           docker build -t bmdarklight/multi-agent-routing:latest \
-                       -t ghcr.io/${{ github.repository_owner }}/multi-agent-routing:latest .
+                       -t ghcr.io/bmdarklight/multi-agent-routing:latest .
 
       - name: Push Docker image to Docker Hub
         run: |
