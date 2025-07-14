@@ -51,8 +51,9 @@ def travel_bot_node(state: AgentState) -> AgentState:
     agent = initialize_agent(
         tools,
         llm,
-        agent="zero-shot-react-description",
+        agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION,
         verbose=True,
+        handle_parsing_errors=True,
         agent_kwargs={
             "prefix": (
                 "You are a travel advisor. "
